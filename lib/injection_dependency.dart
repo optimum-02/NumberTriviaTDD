@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:number_trivia/core/platform/language_infos.dart';
+import 'package:number_trivia/features/number_trivia/presentation/locale_bloc/locale_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/platform/network_infos.dart';
@@ -19,8 +21,8 @@ final getCore = GetIt.instance;
 final getPub = GetIt.instance;
 Future<void> init() async {
   await initPub();
-  initRepo();
   initBloc();
+  initRepo();
   initCore();
 }
 
@@ -32,11 +34,16 @@ initBloc() {
       inputConverter: getCore(),
     ),
   );
+  getBloc.registerFactory(
+    () => LocaleBloc(),
+  );
 }
 
 initCore() {
   getCore.registerLazySingleton(() => InputConverter());
   getCore.registerLazySingleton<NetworkInfos>(() => NetworkInfosImpl(getPub()));
+  getCore.registerLazySingleton<Translation>(
+      () => GoogleTranslationImp(http: getPub()));
 }
 
 initRepo() {
@@ -45,10 +52,10 @@ initRepo() {
 
   getRepo.registerLazySingleton<NumberTriviaRepository>(
     () => NumberTriviaRepositoryImpl(
-      remoteDataSource: getRepo(),
-      localDataSource: getRepo(),
-      networkInfos: getRepo(),
-    ),
+        remoteDataSource: getRepo(),
+        localDataSource: getRepo(),
+        networkInfos: getRepo(),
+        translation: getBloc()),
   );
 
   getRepo.registerLazySingleton<NumberTriviaRemoteDataSource>(

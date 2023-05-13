@@ -21,15 +21,16 @@ void main() {
   const tNumber = 1;
   test('should get trivia from repository for a number', () async {
     //arange
-    when(() => mockNumberTriviRepository.getConcreteNumberTrivia(any()))
+    when(() => mockNumberTriviRepository.getConcreteNumberTrivia(any(), any()))
         .thenAnswer((_) async => right(tNumberTrivia));
 
     //act
-    final result = await usecase(const ConcreteNumberTriviaParams(number: 1));
+    final result = await usecase(
+        const ConcreteNumberTriviaParams(number: tNumber, languageCode: "en"));
     //assets
     expect(result, equals(right(tNumberTrivia)));
     verify(
-      () => mockNumberTriviRepository.getConcreteNumberTrivia(tNumber),
+      () => mockNumberTriviRepository.getConcreteNumberTrivia(tNumber, "en"),
     ).called(1);
   });
 }

@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:number_trivia/core/utils/input_converter.dart';
 
 import '../../../../../core/errors/failures.dart';
-import '../../../../../core/use_cases/usecases.dart';
 import '../../../domain/entities/number_trivia.dart';
 import '../../../domain/use_cases/get_concrete_number_trivia.dart';
 import '../../../domain/use_cases/get_random_number_trivia.dart';
@@ -26,7 +25,6 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         ) {
     on<GetConcreteNumberTriviaEvent>((event, emit) async {
       final number = inputConverter.toUnsignedInteger(event.input);
-      print(number);
 
       if (number.isLeft()) {
         emit(NumberTriviaLoaded(Left(InvalidInputFailure())));
@@ -34,14 +32,17 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
       if (number.isRight()) {
         emit(NumberTriviaLoading());
         final result = await getConcreteNumberTrivia(ConcreteNumberTriviaParams(
-            number: number.getOrElse(() => throw Error())));
+          number: number.getOrElse(() => throw Error()),
+          languageCode: event.languageCode,
+        ));
 
         emit(NumberTriviaLoaded(result));
       }
     });
     on<GetRandomNumberTriviaEvent>((event, emit) async {
       emit(NumberTriviaLoading());
-      final result = await getRandomNumberTrivia(NoParams());
+      final result = await getRandomNumberTrivia(
+          RandomNumberTriviaParams(languageCode: event.languageCode));
       emit(NumberTriviaLoaded(result));
     });
   }

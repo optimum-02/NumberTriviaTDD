@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -15,15 +16,20 @@ class GetConcreteNumberTrivia
   @override
   Future<Either<Failure, NumberTrivia>> call(
       ConcreteNumberTriviaParams params) async {
-    return await numberTriviaRepository.getConcreteNumberTrivia(params.number);
+    return await numberTriviaRepository.getConcreteNumberTrivia(
+        params.number, params.languageCode);
   }
 }
 
 class ConcreteNumberTriviaParams extends Params {
   final int number;
+  final String languageCode;
 
-  const ConcreteNumberTriviaParams({required this.number}) : super();
+  const ConcreteNumberTriviaParams({
+    required this.number,
+    required this.languageCode,
+  }) : super();
 
   @override
-  List<Object?> get props => [number];
+  List<Object?> get props => [number, languageCode];
 }

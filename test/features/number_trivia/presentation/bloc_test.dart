@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:number_trivia/core/errors/failures.dart';
-import 'package:number_trivia/core/use_cases/usecases.dart';
 import 'package:number_trivia/core/utils/input_converter.dart';
 import 'package:number_trivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:number_trivia/features/number_trivia/domain/use_cases/get_concrete_number_trivia.dart';
@@ -32,7 +31,8 @@ void main() {
     );
   });
 
-  final tNumberTrivia = NumberTrivia(number: 1, text: "test text");
+  const tNumberTrivia = NumberTrivia(number: 1, text: "test text");
+  const lang = "en";
 
   group('GetNumberTriviaBloc', () {
     const tNumberString = '1';
@@ -51,7 +51,8 @@ void main() {
       when(() => mockInputConverter.toUnsignedInteger(tNumberString))
           .thenReturn(Left(InvalidInputFailure()));
       // Act
-      numberTriviaBloc.add(const GetConcreteNumberTriviaEvent(tNumberString));
+      numberTriviaBloc
+          .add(const GetConcreteNumberTriviaEvent(tNumberString, lang));
       // Assert
 
       await expectLater(
@@ -74,22 +75,23 @@ void main() {
       when(() => mockInputConverter.toUnsignedInteger(tNumberString))
           .thenReturn(right(1));
       when(
-        () => mockGetConcreteNumberTrivia(
-            const ConcreteNumberTriviaParams(number: tNumber)),
+        () => mockGetConcreteNumberTrivia(const ConcreteNumberTriviaParams(
+            number: tNumber, languageCode: lang)),
       ).thenAnswer((_) async => right(tNumberTrivia));
       // Act
-      numberTriviaBloc.add(const GetConcreteNumberTriviaEvent(tNumberString));
+      numberTriviaBloc
+          .add(const GetConcreteNumberTriviaEvent(tNumberString, lang));
       // Assert
       await expectLater(
         numberTriviaBloc.stream,
         emitsInOrder([
           NumberTriviaLoading(),
-          NumberTriviaLoaded(Right(tNumberTrivia)),
+          const NumberTriviaLoaded(Right(tNumberTrivia)),
         ]),
       );
       verify(
-        () => mockGetConcreteNumberTrivia(
-            const ConcreteNumberTriviaParams(number: tNumber)),
+        () => mockGetConcreteNumberTrivia(const ConcreteNumberTriviaParams(
+            number: tNumber, languageCode: lang)),
       ).called(1);
     });
     test(
@@ -99,11 +101,12 @@ void main() {
       when(() => mockInputConverter.toUnsignedInteger(tNumberString))
           .thenReturn(right(1));
       when(
-        () => mockGetConcreteNumberTrivia(
-            const ConcreteNumberTriviaParams(number: tNumber)),
+        () => mockGetConcreteNumberTrivia(const ConcreteNumberTriviaParams(
+            number: tNumber, languageCode: lang)),
       ).thenAnswer((_) async => left(ServerFailure()));
       // Act
-      numberTriviaBloc.add(const GetConcreteNumberTriviaEvent(tNumberString));
+      numberTriviaBloc
+          .add(const GetConcreteNumberTriviaEvent(tNumberString, lang));
       // Assert
       await expectLater(
         numberTriviaBloc.stream,
@@ -113,8 +116,8 @@ void main() {
         ]),
       );
       verify(
-        () => mockGetConcreteNumberTrivia(
-            const ConcreteNumberTriviaParams(number: tNumber)),
+        () => mockGetConcreteNumberTrivia(const ConcreteNumberTriviaParams(
+            number: tNumber, languageCode: lang)),
       ).called(1);
     });
   });
@@ -134,20 +137,22 @@ void main() {
       // Arrange
 
       when(
-        () => mockGetRandomNumberTrivia(NoParams()),
+        () => mockGetRandomNumberTrivia(
+            const RandomNumberTriviaParams(languageCode: lang)),
       ).thenAnswer((_) async => right(tNumberTrivia));
       // Act
-      numberTriviaBloc.add(const GetRandomNumberTriviaEvent());
+      numberTriviaBloc.add(const GetRandomNumberTriviaEvent(lang));
       // Assert
       await expectLater(
         numberTriviaBloc.stream,
         emitsInOrder([
           NumberTriviaLoading(),
-          NumberTriviaLoaded(Right(tNumberTrivia)),
+          const NumberTriviaLoaded(Right(tNumberTrivia)),
         ]),
       );
       verify(
-        () => mockGetRandomNumberTrivia(NoParams()),
+        () => mockGetRandomNumberTrivia(
+            const RandomNumberTriviaParams(languageCode: lang)),
       ).called(1);
     });
     test(
@@ -157,10 +162,11 @@ void main() {
       final Future<Either<Failure, NumberTrivia>> failure =
           Future.value(left(ServerFailure()));
       when(
-        () => mockGetRandomNumberTrivia(NoParams()),
+        () => mockGetRandomNumberTrivia(
+            const RandomNumberTriviaParams(languageCode: lang)),
       ).thenAnswer((_) => failure);
       // Act
-      numberTriviaBloc.add(const GetRandomNumberTriviaEvent());
+      numberTriviaBloc.add(const GetRandomNumberTriviaEvent(lang));
       // Assert
       await expectLater(
         numberTriviaBloc.stream,
@@ -170,7 +176,8 @@ void main() {
         ]),
       );
       verify(
-        () => mockGetRandomNumberTrivia(NoParams()),
+        () => mockGetRandomNumberTrivia(
+            const RandomNumberTriviaParams(languageCode: lang)),
       ).called(1);
     });
   });

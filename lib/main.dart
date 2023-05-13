@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'core/localization/localization_export.dart';
+import 'features/number_trivia/presentation/locale_bloc/locale_bloc.dart';
 import 'features/number_trivia/presentation/number_trivia/pages/number_trivia_page.dart';
+import 'features/number_trivia/presentation/theme_bloc/theme_bloc.dart';
 import 'injection_dependency.dart' as di;
+import 'injection_dependency.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  runApp(const Root());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getBloc<LocaleBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => ThemeBloc(context),
+        ),
+      ],
+      child: const Root(),
+    ),
+  );
 }
 
 class Root extends StatelessWidget {
@@ -17,12 +34,14 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Number Trivia',
-      theme: ThemeData(
-        primaryColor: Colors.green.shade800,
-        primarySwatch: Colors.green,
-        // useMaterial3: true,
-      ),
+      locale: context.watch<LocaleBloc>().state.locale,
+      themeAnimationDuration: const Duration(milliseconds: 800),
+      themeAnimationCurve: Curves.easeIn,
+      title: "Number Trivia",
+      theme: context.watch<ThemeBloc>().state.theme,
+      localeResolutionCallback: AppLocalization.localeResolutionCallBack,
+      supportedLocales: AppLocalization.supportedLocales,
+      localizationsDelegates: AppLocalization.localizationsDelegate,
       home: const NumbertriviaPage(),
     );
   }

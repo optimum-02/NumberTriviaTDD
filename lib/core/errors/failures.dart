@@ -19,6 +19,11 @@ class NoCachedDataFailure extends Failure {
   List<Object?> get props => [];
 }
 
+class TransalationFailedFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
 class InvalidInputFailure extends Failure {
   @override
   List<Object?> get props => [];
