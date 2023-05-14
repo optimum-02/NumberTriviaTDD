@@ -1,10 +1,13 @@
 part of 'theme_bloc.dart';
 
 @immutable
-class ThemeState {
+class ThemeState extends Equatable {
   final ThemeData theme;
 
   const ThemeState(this.theme);
+
+  @override
+  List<Object?> get props => [theme];
 }
 
 final lightTheme = ThemeData(

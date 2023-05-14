@@ -6,40 +6,52 @@ import 'package:number_trivia/core/platform/language_infos.dart';
 
 class MockHttpClient extends Mock implements Client {}
 
+class FakeUri extends Fake implements Uri {}
+
 void main() {
   late MockHttpClient mockHttpClient;
   late GoogleTranslationImp googleTranslationImp;
+  // late Future<Response> request;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
     googleTranslationImp = GoogleTranslationImp(http: mockHttpClient);
+    // request = mockHttpClient.post(any());
   });
-  final request = mockHttpClient.post(
-    Uri.parse(any()),
-  );
+
+  registerFallbackValue(FakeUri());
 
   test(
       'should make http post request to google traduction api and return a string when the status code equal to 200',
       () async {
     // Arrange
-    when(() => request).thenAnswer((_) async => Response("texte", 200));
+    when(() => mockHttpClient.post(any())).thenAnswer((_) async => Response("""{
+    "data": {
+        "translations": [
+            {
+                "translatedText": "texte"
+            }
+        ]
+    }
+}""", 200));
     // Act
     final result = await googleTranslationImp.translate(
         text: "text", sourceLanguageCode: "en", targetLanguageCode: "fr");
     // Assert
-    verify(() => request).called(1);
+    verify(() => mockHttpClient.post(any())).called(1);
     expect(result, "texte");
   });
   test(
       'should make http post request to google traduction api and throw translationf failed exception a string when the status code different to 200',
       () async {
     // Arrange
-    when(() => request).thenAnswer((_) async => Response("texte", 404));
+    when(() => mockHttpClient.post(any()))
+        .thenAnswer((_) async => Response("texte", 404));
     // Act
     final result = googleTranslationImp.translate(
         text: "text", sourceLanguageCode: "en", targetLanguageCode: "fr");
     // Assert
-    verify(() => request).called(1);
+    verify(() => mockHttpClient.post(any())).called(1);
     await expectLater(result, throwsA(isA<TranslationFailedException>()));
   });
   test(
