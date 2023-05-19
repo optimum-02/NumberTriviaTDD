@@ -11,5 +11,8 @@
     "initialInstructionText": "Entrer ou obtenir un nombre et une anecdote sur ce nombre 🤗",
     "changeThemeTooltip": "Basculer entre le thème sombre et clair",
     "randomButtonTooltip": "Obtenir une anecdote sur un nombre aleatoire",
-    "concreteButtonTooltip": "Obtenir une anecdote pour le nombre entré"
+    "concreteButtonTooltip": "Obtenir une anecdote pour le nombre entré",
+    "mathTriviaMenuTooltip": "Menu Anecdote mathematique",
+    "dateTriviaMenuTooltip": "Menu Anecdote sur les dates",
+    "numberTriviaMenuTooltip": "Menu Ancedote sur les nombres"
 }

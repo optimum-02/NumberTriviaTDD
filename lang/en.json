@@ -11,5 +11,8 @@
     "initialInstructionText": "Enter or get random number and his trivia 🤗",
     "changeThemeTooltip": "Switch between dark and light theme",
     "randomButtonTooltip": "Get a random number trivia",
-    "concreteButtonTooltip": "Get a trivia for the number entered"
+    "concreteButtonTooltip": "Get a trivia for the number entered",
+    "mathTriviaMenuTooltip": "Math Trivia Menu",
+    "dateTriviaMenuTooltip": "Date Trivia Menu",
+    "numberTriviaMenuTooltip": "Number Trivia Menu"
 }

@@ -8,4 +8,12 @@ abstract class NumberTriviaRepository {
       int number, String languageCode);
   Future<Either<Failure, NumberTrivia>> getRandomNumberTrivia(
       String languageCode);
+  Future<Either<Failure, NumberTrivia>> getMathTrivia(
+      int number, String languageCode);
+  Future<Either<Failure, NumberTrivia>> getRandomMathTrivia(
+      String languageCode);
+  Future<Either<Failure, NumberTrivia>> getDateTrivia(
+      int month, int day, String languageCode);
+  Future<Either<Failure, NumberTrivia>> getRandomDateTrivia(
+      String languageCode);
 }

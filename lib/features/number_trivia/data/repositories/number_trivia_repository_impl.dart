@@ -25,24 +25,89 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   Future<Either<Failure, NumberTrivia>> getConcreteNumberTrivia(
       int number, String languageCode) async {
     return getRandomOrConcreteNumberTrivia(
-        () => remoteDataSource.getConcreteNumberTrivia(number), languageCode);
+      randomOrRandomNumberTrivia: () =>
+          remoteDataSource.getConcreteNumberTrivia(number),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheNumberTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedNumberTrivia(),
+      locale: languageCode,
+    );
   }
 
   @override
   Future<Either<Failure, NumberTrivia>> getRandomNumberTrivia(
       String languageCode) async {
     return getRandomOrConcreteNumberTrivia(
-        () => remoteDataSource.getRandomNumberTrivia(), languageCode);
+      randomOrRandomNumberTrivia: () =>
+          remoteDataSource.getRandomNumberTrivia(),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheNumberTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedNumberTrivia(),
+      locale: languageCode,
+    );
   }
 
-  Future<Either<Failure, NumberTrivia>> getRandomOrConcreteNumberTrivia(
-      Future<NumberTriviaModel> Function() randomOrRandomNumberTrivia,
-      String locale) async {
+  @override
+  Future<Either<Failure, NumberTrivia>> getDateTrivia(
+      int month, int day, String languageCode) {
+    return getRandomOrConcreteNumberTrivia(
+      randomOrRandomNumberTrivia: () =>
+          remoteDataSource.getDateTrivia(month, day),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheDateTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedDateTrivia(),
+      locale: languageCode,
+    );
+  }
+
+  @override
+  Future<Either<Failure, NumberTrivia>> getMathTrivia(
+      int number, String languageCode) {
+    return getRandomOrConcreteNumberTrivia(
+      randomOrRandomNumberTrivia: () => remoteDataSource.getMathTrivia(number),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheMathTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedMathTrivia(),
+      locale: languageCode,
+    );
+  }
+
+  @override
+  Future<Either<Failure, NumberTrivia>> getRandomDateTrivia(
+      String languageCode) {
+    return getRandomOrConcreteNumberTrivia(
+      randomOrRandomNumberTrivia: () => remoteDataSource.getRandomDateTrivia(),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheDateTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedDateTrivia(),
+      locale: languageCode,
+    );
+  }
+
+  @override
+  Future<Either<Failure, NumberTrivia>> getRandomMathTrivia(
+      String languageCode) {
+    return getRandomOrConcreteNumberTrivia(
+      randomOrRandomNumberTrivia: () => remoteDataSource.getRandomMathTrivia(),
+      cacheTrivia: (numberTriviaModel) =>
+          localDataSource.cacheMathTrivia(numberTriviaModel),
+      getCachedTrivia: () => localDataSource.getCachedMathTrivia(),
+      locale: languageCode,
+    );
+  }
+
+  Future<Either<Failure, NumberTrivia>> getRandomOrConcreteNumberTrivia({
+    required Future<NumberTriviaModel> Function() randomOrRandomNumberTrivia,
+    required Future<void> Function(NumberTriviaModel numberTriviaModel)
+        cacheTrivia,
+    required Future<NumberTriviaModel> Function() getCachedTrivia,
+    required String locale,
+  }) async {
     if (await networkInfos.checkConnection()) {
       try {
         final result = await randomOrRandomNumberTrivia();
 
-        await localDataSource.cacheNumberTrivia(result);
+        await cacheTrivia(result);
         try {
           final translated = await translation.translate(
               text: result.text,
@@ -59,7 +124,7 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
       }
     } else {
       try {
-        final result = await localDataSource.getCachedNumberTrivia();
+        final result = await getCachedTrivia();
 
         return Right(result);
       } on NoCachedNumberTriviaException {

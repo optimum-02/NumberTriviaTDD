@@ -90,3 +90,38 @@ class FixedSize extends StatelessWidget {
 const textStyle = TextStyle(
   fontSize: 15,
 );
+
+class ButtonBarIcon extends StatelessWidget {
+  final String iconPath;
+  final bool isActive;
+  final void Function() onClick;
+  final String tooltip;
+  const ButtonBarIcon(
+      {super.key,
+      required this.iconPath,
+      required this.isActive,
+      required this.onClick,
+      required this.tooltip});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: "Message",
+      child: GestureDetector(
+        onTap: onClick,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isActive ? Colors.blue : Colors.grey),
+          child: Image.asset(
+            iconPath,
+            height: 24,
+            width: 24,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}

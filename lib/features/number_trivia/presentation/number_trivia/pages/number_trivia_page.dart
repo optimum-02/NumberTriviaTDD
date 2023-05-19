@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +16,7 @@ part '../widget/trivia_control.dart';
 part '../widget/page_title.dart';
 part '../widget/trivia_display.dart';
 part '../widget/widget.dart';
+part '../widget/page_view_body.dart';
 
 class NumbertriviaPage extends StatelessWidget {
   const NumbertriviaPage({super.key});
@@ -41,6 +44,7 @@ class NumberTriviaBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      lazy: true,
       create: (context) {
         return getBloc<NumberTriviaBloc>();
       },
@@ -50,11 +54,7 @@ class NumberTriviaBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: const [
             TitleWidget(),
-            NumberTriviaText(),
-            FixedSize(),
-            TriviaControls(),
-            FixedSize(),
-            FixedSize()
+            PageViewBody(),
           ],
         ),
       ),

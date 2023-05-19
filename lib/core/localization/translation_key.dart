@@ -15,7 +15,10 @@ enum TKeys {
   initialInstructionText,
   changeThemeTooltip,
   randomButtonTooltip,
-  concreteButtonTooltip
+  concreteButtonTooltip,
+  dateTriviaMenuTooltip,
+  numberTriviaMenuTooltip,
+  mathTriviaMenuTooltip
 }
 
 extension TKeysX on TKeys {
