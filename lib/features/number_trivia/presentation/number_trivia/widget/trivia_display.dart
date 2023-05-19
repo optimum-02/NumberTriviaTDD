@@ -24,7 +24,9 @@ class NumberTriviaText extends StatelessWidget {
                   Text(
                     TKeys.welcomeText.tr(context),
                     style: textStyle.copyWith(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).iconTheme.color),
                   ),
                   const SizedBox(
                     height: 24,
@@ -32,7 +34,8 @@ class NumberTriviaText extends StatelessWidget {
                   Text(
                     TKeys.initialInstructionText.tr(context),
                     textAlign: TextAlign.center,
-                    style: textStyle.copyWith(fontSize: 16),
+                    style: textStyle.copyWith(
+                        fontSize: 16, color: Theme.of(context).iconTheme.color),
                   ),
                 ],
               );

@@ -28,7 +28,7 @@ class AppLocalization {
   }
 
   String translate(String key) {
-    return _localizedString[key] ?? "Key not found";
+    return _localizedString[key] ?? "Not found";
   }
 
   static const supportedLocales = [Locale('en', 'US'), Locale('fr', 'BJ')];

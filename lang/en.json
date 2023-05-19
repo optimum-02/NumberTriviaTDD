@@ -7,7 +7,9 @@
     "invalidInputFailure": "😱 Invalid input number. Please enter a correct number",
     "transalationFailedFailureText": "😱 Translation in to your language failed.",
     "noCachedDataFailureText": "😱 No internet and no cached data found",
-    "welcomeText": "Welcome ! 😍",
+    "welcomeText": "Welcome  😍",
     "initialInstructionText": "Enter or get random number and his trivia 🤗",
-    "changeThemeTooltip": "Switch between dark and light theme"
+    "changeThemeTooltip": "Switch between dark and light theme",
+    "randomButtonTooltip": "Get a random number trivia",
+    "concreteButtonTooltip": "Get a trivia for the number entered"
 }

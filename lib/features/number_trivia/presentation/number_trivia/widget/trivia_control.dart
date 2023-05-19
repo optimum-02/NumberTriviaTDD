@@ -40,26 +40,28 @@ class _TriviaControlsState extends State<TriviaControls> {
             return Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: state is NumberTriviaLoading
-                        ? null
-                        : () {
-                            context.read<NumberTriviaBloc>().add(
-                                  GetConcreteNumberTriviaEvent(
-                                      number.text,
-                                      context
-                                          .read<LocaleBloc>()
-                                          .state
-                                          .locale!
-                                          .languageCode),
-                                );
-                            setState(() {
-                              number.clear();
-                            });
-                          },
-                    child: Text(
-                      TKeys.buttonSearchTriviaText.tr(context),
-                      style: textStyle,
+                  child: Tooltip(
+                    message: TKeys.concreteButtonTooltip.tr(context),
+                    child: ElevatedButton(
+                      onPressed: state is NumberTriviaLoading
+                          ? null
+                          : () {
+                              context.read<NumberTriviaBloc>().add(
+                                    GetConcreteNumberTriviaEvent(
+                                        number.text,
+                                        context
+                                            .read<LocaleBloc>()
+                                            .state
+                                            .locale!
+                                            .languageCode),
+                                  );
+                              setState(() {
+                                number.clear();
+                              });
+                            },
+                      child: Text(
+                        TKeys.buttonSearchTriviaText.tr(context),
+                      ),
                     ),
                   ),
                 ),
@@ -67,24 +69,26 @@ class _TriviaControlsState extends State<TriviaControls> {
                   width: 12,
                 ),
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: state is NumberTriviaLoading
-                        ? null
-                        : () {
-                            context.read<NumberTriviaBloc>().add(
-                                  GetRandomNumberTriviaEvent(context
-                                      .read<LocaleBloc>()
-                                      .state
-                                      .locale!
-                                      .languageCode),
-                                );
-                            setState(() {
-                              number.clear();
-                            });
-                          },
-                    child: Text(
-                      TKeys.buttonRandomTriviaText.tr(context),
-                      style: textStyle,
+                  child: Tooltip(
+                    message: TKeys.randomButtonTooltip.tr(context),
+                    child: OutlinedButton(
+                      onPressed: state is NumberTriviaLoading
+                          ? null
+                          : () {
+                              context.read<NumberTriviaBloc>().add(
+                                    GetRandomNumberTriviaEvent(context
+                                        .read<LocaleBloc>()
+                                        .state
+                                        .locale!
+                                        .languageCode),
+                                  );
+                              setState(() {
+                                number.clear();
+                              });
+                            },
+                      child: Text(
+                        TKeys.buttonRandomTriviaText.tr(context),
+                      ),
                     ),
                   ),
                 ),

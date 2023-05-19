@@ -20,10 +20,10 @@ class TitleWidget extends StatelessWidget {
           children: [
             Text(
               TKeys.appTitle.tr(context),
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white),
+                  color: Colors.white.withOpacity(.8)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -22,12 +22,12 @@ class TriviaDisplay extends StatelessWidget {
             children: [
               const FixedSize(),
               Text(
-                '${numberTrivia.number}',
+                numberTrivia.number?.toString() ?? "∞",
                 textAlign: TextAlign.center,
                 style: textStyle.copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).iconTheme.color),
               ),
               const FixedSize(),
               Padding(
@@ -36,9 +36,9 @@ class TriviaDisplay extends StatelessWidget {
                   numberTrivia.text,
                   textAlign: TextAlign.center,
                   style: textStyle.copyWith(
-                    fontSize: 16,
-                    height: 1.2,
-                  ),
+                      fontSize: 16,
+                      height: 1.2,
+                      color: Theme.of(context).iconTheme.color),
                   //
                 ),
               ),

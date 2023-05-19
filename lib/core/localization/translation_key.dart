@@ -13,7 +13,9 @@ enum TKeys {
   noCachedDataFailureText,
   welcomeText,
   initialInstructionText,
-  changeThemeTooltip
+  changeThemeTooltip,
+  randomButtonTooltip,
+  concreteButtonTooltip
 }
 
 extension TKeysX on TKeys {
