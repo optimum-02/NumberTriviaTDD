@@ -8,11 +8,13 @@
     "transalationFailedFailureText": "😱 La traduction dans votre langue a échoué",
     "noCachedDataFailureText": "😱 Aucune connexion internet et aucune donnée en cache",
     "welcomeText": "Bienvenu 😍",
-    "initialInstructionText": "Entrer ou obtenir un nombre et une anecdote sur ce nombre 🤗",
+    "initialInstructionText": "Entrer ou obtenir un nombre aléatoire et une anecdote sur ce nombre 🤗",
     "changeThemeTooltip": "Basculer entre le thème sombre et clair",
     "randomButtonTooltip": "Obtenir une anecdote sur un nombre aleatoire",
     "concreteButtonTooltip": "Obtenir une anecdote pour le nombre entré",
     "mathTriviaMenuTooltip": "Menu Anecdote mathematique",
     "dateTriviaMenuTooltip": "Menu Anecdote sur les dates",
-    "numberTriviaMenuTooltip": "Menu Ancedote sur les nombres"
+    "numberTriviaMenuTooltip": "Menu Ancedote sur les nombres",
+    "initialInstructionTextForMathTrivia": "Entrer ou obtenir un nombre aléatoire et une anecdote mathématique sur ce nombre 🤗",
+    "initialInstructionTextForDateTrivia": "Entrer ou obtenir un date aléatoire et une anecdote sur cette date 🤗"
 }

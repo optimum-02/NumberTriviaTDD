@@ -21,13 +21,6 @@ class NumberTriviaText extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    TKeys.welcomeText.tr(context),
-                    style: textStyle.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).iconTheme.color),
-                  ),
                   const SizedBox(
                     height: 24,
                   ),
@@ -65,6 +58,8 @@ class NumberTriviaText extends StatelessWidget {
                 (numberTrivia) {
                   return TriviaDisplay(
                     numberTrivia: numberTrivia,
+                    dateTrivia: false,
+                    locale: context.locale().languageCode,
                   );
                 },
               );

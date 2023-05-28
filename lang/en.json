@@ -14,5 +14,7 @@
     "concreteButtonTooltip": "Get a trivia for the number entered",
     "mathTriviaMenuTooltip": "Math Trivia Menu",
     "dateTriviaMenuTooltip": "Date Trivia Menu",
-    "numberTriviaMenuTooltip": "Number Trivia Menu"
+    "numberTriviaMenuTooltip": "Number Trivia Menu",
+    "initialInstructionTextForMathTrivia": "Enter or get random number and his mathematic trivia 🤗",
+    "initialInstructionTextForDateTrivia": "Choose or get random date and his trivia 🤗"
 }

@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/platform/date_utils.dart';
 import '../models/number_trivia_model.dart';
 
 abstract class NumberTriviaRemoteDataSource {
@@ -16,8 +19,12 @@ abstract class NumberTriviaRemoteDataSource {
 
 class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
   final Client httpClient;
+  final IAUtils dateUtils;
 
-  NumberTriviaRemoteDataSourceImpl(this.httpClient);
+  NumberTriviaRemoteDataSourceImpl(
+    this.httpClient,
+    this.dateUtils,
+  );
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
     return await _getTriviaFromUrl("http://numbersapi.com/$number");
@@ -25,22 +32,26 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
 
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() async {
-    return await _getTriviaFromUrl("http://numbersapi.com/random");
+    return await _getTriviaFromUrl(
+      "http://numbersapi.com/random",
+    );
   }
 
   @override
   Future<NumberTriviaModel> getDateTrivia(int month, int day) async {
-    return await _getTriviaFromUrl("http://numbersapi.com/$month/$day/date");
+    return await _getTriviaFromUrl("http://numbersapi.com/$month/$day/date",
+        dateTrivia: true);
   }
 
   @override
   Future<NumberTriviaModel> getRandomDateTrivia() async {
-    return await _getTriviaFromUrl("http://numbersapi.com/random/date");
+    return await _getTriviaFromUrl("http://numbersapi.com/random/date",
+        dateTrivia: true);
   }
 
   @override
   Future<NumberTriviaModel> getMathTrivia(int number) async {
-    return await _getTriviaFromUrl("http://numbersapi.com/$number/date");
+    return await _getTriviaFromUrl("http://numbersapi.com/$number/math");
   }
 
   @override
@@ -48,13 +59,24 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
     return await _getTriviaFromUrl("http://numbersapi.com/random/math");
   }
 
-  Future<NumberTriviaModel> _getTriviaFromUrl(String url) async {
+  Future<NumberTriviaModel> _getTriviaFromUrl(String url,
+      {bool dateTrivia = false}) async {
     try {
       final result = await httpClient
           .get(Uri.parse(url), headers: {"Content-Type": "application/json"});
       if (result.statusCode == 200) {
-        return NumberTriviaModel.fromJson(
+        final nt = NumberTriviaModel.fromJson(
             jsonDecode(result.body) as Map<String, dynamic>);
+        if (dateTrivia && nt.number != null) {
+          try {
+            final number = await dateUtils.getDateFromSentence(nt.text);
+            return NumberTriviaModel(
+                number: number.millisecondsSinceEpoch, text: nt.text);
+          } on Exception {
+            throw ServerException();
+          }
+        }
+        return nt;
       } else {
         throw ServerException();
       }

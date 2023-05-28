@@ -8,7 +8,17 @@ class TriviaControls extends StatefulWidget {
 }
 
 class _TriviaControlsState extends State<TriviaControls> {
-  final number = TextEditingController(text: "");
+  final number = TextEditingController();
+
+  getConcreteNumberTriviaPressed(NumberTriviaState state) {
+    context.read<NumberTriviaBloc>().add(
+          GetConcreteNumberTriviaEvent(number.text,
+              context.read<LocaleBloc>().state.locale!.languageCode),
+        );
+    setState(() {
+      number.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +26,14 @@ class _TriviaControlsState extends State<TriviaControls> {
       children: [
         TextFormField(
           controller: number,
-          onChanged: (value) {},
+          onChanged: (value) {
+            setState(() {});
+          },
           onFieldSubmitted: (value) {
             // context.read<NumberTriviaBloc>().add(
             //       GetConcreteNumberTriviaEvent(number.text),
             //     );
-            // number.clear();
+            // umber.clear();
           },
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
@@ -43,22 +55,9 @@ class _TriviaControlsState extends State<TriviaControls> {
                   child: Tooltip(
                     message: TKeys.concreteButtonTooltip.tr(context),
                     child: ElevatedButton(
-                      onPressed: state is NumberTriviaLoading
+                      onPressed: number.text.isEmpty
                           ? null
-                          : () {
-                              context.read<NumberTriviaBloc>().add(
-                                    GetConcreteNumberTriviaEvent(
-                                        number.text,
-                                        context
-                                            .read<LocaleBloc>()
-                                            .state
-                                            .locale!
-                                            .languageCode),
-                                  );
-                              setState(() {
-                                number.clear();
-                              });
-                            },
+                          : () => getConcreteNumberTriviaPressed(state),
                       child: Text(
                         TKeys.buttonSearchTriviaText.tr(context),
                       ),

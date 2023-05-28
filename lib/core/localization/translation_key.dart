@@ -18,7 +18,9 @@ enum TKeys {
   concreteButtonTooltip,
   dateTriviaMenuTooltip,
   numberTriviaMenuTooltip,
-  mathTriviaMenuTooltip
+  mathTriviaMenuTooltip,
+  initialInstructionTextForMathTrivia,
+  initialInstructionTextForDateTrivia
 }
 
 extension TKeysX on TKeys {

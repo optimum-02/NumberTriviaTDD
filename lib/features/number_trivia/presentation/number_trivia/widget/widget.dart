@@ -1,10 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of "../pages/number_trivia_page.dart";
 
 class TriviaDisplay extends StatelessWidget {
   final NumberTrivia numberTrivia;
+  final bool dateTrivia;
+  final String locale;
   const TriviaDisplay({
     Key? key,
     required this.numberTrivia,
+    required this.dateTrivia,
+    required this.locale,
   }) : super(key: key);
 
   @override
@@ -21,8 +26,8 @@ class TriviaDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const FixedSize(),
-              Text(
-                numberTrivia.number?.toString() ?? "∞",
+              SelectableText(
+                triviaTitle(),
                 textAlign: TextAlign.center,
                 style: textStyle.copyWith(
                     fontSize: 24,
@@ -32,7 +37,7 @@ class TriviaDisplay extends StatelessWidget {
               const FixedSize(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: SelectableText(
                   numberTrivia.text,
                   textAlign: TextAlign.center,
                   style: textStyle.copyWith(
@@ -53,6 +58,23 @@ class TriviaDisplay extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String triviaTitle() {
+    if (dateTrivia && numberTrivia.number != null) {
+      final dte = DateTime.fromMillisecondsSinceEpoch(numberTrivia.number!);
+
+      final dateFormattedEn = DateFormat("EEE MMM dd, ", "en").format(dte) +
+          dte.year.abs().toString() +
+          (dte.year < 0 ? " BC" : "");
+      final dateFormattedFr = DateFormat("EEE dd MMM ", "fr").format(dte) +
+          dte.year.abs().toString() +
+          (dte.year < 0 ? " av. J-C" : "");
+      // "${dte.day}-${dte.month}-${dte.year}";
+      return locale == "en" ? dateFormattedEn : dateFormattedFr;
+    } else {
+      return numberTrivia.number?.toString() ?? "∞";
+    }
   }
 }
 
@@ -106,7 +128,7 @@ class ButtonBarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: "Message",
+      message: tooltip,
       child: GestureDetector(
         onTap: onClick,
         child: Container(

@@ -1,4 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:number_trivia/features/number_trivia/presentation/locale_bloc/locale_bloc.dart';
 
 import '../errors/failures.dart';
 
@@ -15,5 +18,11 @@ class InputConverter {
     } on FormatException {
       return Left(InvalidInputFailure());
     }
+  }
+}
+
+extension ContextX on BuildContext {
+  Locale locale() {
+    return read<LocaleBloc>().state.locale!;
   }
 }

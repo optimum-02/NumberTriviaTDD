@@ -57,6 +57,16 @@ class _PageViewBodyState extends State<PageViewBody> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: const [
+                    DateTriviaText(),
+                    FixedSize(),
+                    DateTriviaControls(),
+                    FixedSize(),
+                    FixedSize()
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
                     NumberTriviaText(),
                     FixedSize(),
                     TriviaControls(),
@@ -64,14 +74,22 @@ class _PageViewBodyState extends State<PageViewBody> {
                     FixedSize()
                   ],
                 ),
-                Container(),
-                const NumberTriviaText(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    MathTriviaText(),
+                    FixedSize(),
+                    MathTriviaControls(),
+                    FixedSize(),
+                    FixedSize()
+                  ],
+                ),
               ],
             ),
           ),
           Container(
             height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 // border: Border.all(color: Colors.blue),
