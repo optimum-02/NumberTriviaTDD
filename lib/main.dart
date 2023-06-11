@@ -17,9 +17,9 @@ void main() async {
         BlocProvider(
           create: (context) => getBloc<LocaleBloc>(),
         ),
-        BlocProvider(
-          create: (context) => ThemeBloc(context),
-        ),
+        BlocProvider(create: (context) {
+          return ThemeBloc();
+        }),
       ],
       child: const Root(),
     ),
@@ -32,17 +32,32 @@ class Root extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    setSystemThemeForFirstLauch(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.watch<LocaleBloc>().state.locale,
-      themeAnimationDuration: const Duration(milliseconds: 800),
+      themeAnimationDuration: const Duration(milliseconds: 50),
       themeAnimationCurve: Curves.easeIn,
       title: "Number Trivia",
       theme: context.watch<ThemeBloc>().state.theme,
       localeResolutionCallback: AppLocalization.localeResolutionCallBack,
       supportedLocales: AppLocalization.supportedLocales,
       localizationsDelegates: AppLocalization.localizationsDelegate,
-      home: const NumbertriviaPage(),
+      home: Builder(builder: (context) {
+        return const NumbertriviaPage();
+      }),
     );
+  }
+}
+
+///Set the application theme to the system theme for the first lauch
+setSystemThemeForFirstLauch(BuildContext context) {
+  final systemTheme =
+      MediaQuery.platformBrightnessOf(context) == Brightness.dark
+          ? darkTheme
+          : lightTheme;
+  final isFirstLauch = context.read<ThemeBloc>().state.init;
+  if (isFirstLauch) {
+    context.read<ThemeBloc>().add(ThemeChanged(systemTheme));
   }
 }

@@ -3,8 +3,9 @@ part of 'theme_bloc.dart';
 @immutable
 class ThemeState extends Equatable {
   final ThemeData theme;
+  final bool init;
 
-  const ThemeState(this.theme);
+  const ThemeState(this.theme, this.init);
 
   @override
   List<Object?> get props => [theme];

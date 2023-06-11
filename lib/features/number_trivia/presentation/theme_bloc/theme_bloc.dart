@@ -6,17 +6,12 @@ part 'theme_event.dart';
 part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  final BuildContext context;
-  ThemeBloc(this.context)
+  ThemeBloc()
       : super(
-          ThemeState(
-            MediaQuery.platformBrightnessOf(context) == Brightness.dark
-                ? darkTheme
-                : lightTheme,
-          ),
+          ThemeState(darkTheme, true),
         ) {
     on<ThemeChanged>((event, emit) {
-      emit(ThemeState(event.theme));
+      emit(ThemeState(event.theme, false));
     });
   }
 }
